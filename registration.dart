@@ -5,11 +5,13 @@ import 'student.dart';
 import 'employee.dart';
 import 'dart:math';
 
+// store users and unique info
 List<Person> users = [];
 List<String> emails = [];
 List<int> stuNums = [];
 List<int> empNums = [];
 
+// generate random 10-char password
 String generatePassword() {
   const String chars =
       "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
@@ -17,6 +19,7 @@ String generatePassword() {
   return List.generate(10, (index) => chars[rand.nextInt(chars.length)]).join();
 }
 
+// generate username
 String generateUsername(String name) {
   String nameFive = name.length >= 5
       ? name.substring(0, 5).toLowerCase()
@@ -26,11 +29,13 @@ String generateUsername(String name) {
   return nameFive + randomDigits.toString();
 }
 
+// register a new student
 void registerStudent() {
   printBorder();
   print("=========== Register Student ===========");
   printBorder();
 
+  // ask student number
   int? studNum;
   String? studNumInput;
 
@@ -51,6 +56,7 @@ void registerStudent() {
     }
   }
 
+  // ask full name
   String? name;
 
   while (true) {
@@ -72,6 +78,7 @@ void registerStudent() {
     }
   }
 
+  // ask email
   String? email;
 
   while (true) {
@@ -96,12 +103,16 @@ void registerStudent() {
       break;
     }
   }
+
+  // generate password and username
   String password = generatePassword();
   String username = generateUsername(name);
 
+  // create student
   var student = Student(name, email, password, studNum);
   users.add(student);
 
+  // display registration info
   printBorder();
   print("Welcome $name");
   print("Your email is: $email");
@@ -111,11 +122,13 @@ void registerStudent() {
   printBorder();
 }
 
+// register employee
 void registerEmployee() {
   printBorder();
   print("\n=========== Register Employee ==========");
   printBorder();
 
+  // ask employee number
   int? empNum;
   String? empNumInput;
 
@@ -136,6 +149,7 @@ void registerEmployee() {
     }
   }
 
+  // ask full name
   String? name;
 
   while (true) {
@@ -157,6 +171,7 @@ void registerEmployee() {
     }
   }
 
+  // ask email
   String? email;
 
   while (true) {
@@ -181,12 +196,16 @@ void registerEmployee() {
       break;
     }
   }
+
+  // generate password and username
   String password = generatePassword();
   String username = generateUsername(name);
 
+  // create employee
   var employee = Employee(name, email, password, empNum);
   users.add(employee);
 
+  // display registration info
   printBorder();
   print("Welcome $name");
   print("Your email is: $email");

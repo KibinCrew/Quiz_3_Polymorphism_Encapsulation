@@ -13,9 +13,12 @@ void main() {
     print(" | (4) View All Users            |");
     print(" | (0) Exit the Portal           |");
     printBorder();
+
+    // choose menu options
     stdout.write("Choose an option: ");
     String choice = stdin.readLineSync()!;
 
+    // execute chosen option
     switch (choice) {
       case '1':
         registerStudent();
@@ -40,6 +43,7 @@ void main() {
   }
 }
 
+// print a line border
 void printBorder() {
   print("=" * 40);
 }

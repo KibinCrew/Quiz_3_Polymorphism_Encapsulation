@@ -1,12 +1,16 @@
 import 'person.dart';
 
 class Student extends Person {
+  // student number
   int _studNum;
   Student(String name, String email, String password, this._studNum)
+    // initialize parent
     : super(name, email, password);
 
+  // getter
   int get studNum => _studNum;
 
+  // display info
   @override
   void display() {
     print("Student: $name");

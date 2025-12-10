@@ -3,11 +3,13 @@ import 'main.dart';
 import 'person.dart';
 import 'registration.dart';
 
+// login function
 void login() {
   printBorder();
   print("\n================= Login ================");
   printBorder();
 
+  // ask email
   String? email;
 
   while (true) {
@@ -30,9 +32,11 @@ void login() {
     }
   }
 
+  // ask password
   stdout.write("Enter password: ");
   String password = stdin.readLineSync()!;
 
+  // check user
   Person? loggedUser;
   for (var user in users) {
     if (user.email == email && user.password == password) {
@@ -41,6 +45,7 @@ void login() {
     }
   }
 
+  // invalid login
   if (loggedUser == null) {
     printBorder();
     print("Invalid email or password.");
@@ -48,6 +53,7 @@ void login() {
     return;
   }
 
+  // check if account is locked
   if (loggedUser.isLocked) {
     printBorder();
     print(
@@ -56,10 +62,14 @@ void login() {
     printBorder();
     return;
   }
+
+  // reset failed attempts
   loggedUser.resetFailedAttempts();
   printBorder();
   print("Logged in successfully!");
   print("Welcome, ${loggedUser.name}!");
+
+  // change password option
   stdout.write("Would you like to change your password? (yes/no): ");
   String? changePasswordChoice = stdin.readLineSync();
 
@@ -72,6 +82,7 @@ void login() {
   printBorder();
 }
 
+// change password 
 void changePassword(Person user) {
   stdout.write("Enter old password:");
   String oldPassword = stdin.readLineSync()!;
@@ -80,6 +91,7 @@ void changePassword(Person user) {
     return;
   }
 
+  // ask new password
   print("Enter new password of at least 8 characters:");
   String newPassword = stdin.readLineSync()!;
 
@@ -89,6 +101,8 @@ void changePassword(Person user) {
     );
     return;
   }
+
+  // confirm new password
   print("Confirm new password:");
   String confirmNewPassword = stdin.readLineSync()!;
 
@@ -96,6 +110,8 @@ void changePassword(Person user) {
     print("Passwords does not match.");
     return;
   }
+
+  // update password
   user.password = newPassword;
   print("Password has been changed successfully.");
 }
