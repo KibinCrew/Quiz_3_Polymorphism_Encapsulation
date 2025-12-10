@@ -6,6 +6,9 @@ import 'employee.dart';
 import 'dart:math';
 
 List<Person> users = [];
+List<String> emails = [];
+List<int> stuNums = [];
+List<int> empNums = [];
 
 String generatePassword() {
   const String chars =
@@ -27,12 +30,72 @@ void registerStudent() {
   printBorder();
   print("=========== Register Student ===========");
   printBorder();
-  print("Enter student number:");
-  int studNum = int.parse(stdin.readLineSync()!);
-  print("Enter full name:");
-  String name = stdin.readLineSync()!;
-  print("Enter email:");
-  String email = stdin.readLineSync()!;
+
+  int? studNum;
+  String? studNumInput;
+
+  while (true) {
+    stdout.write("Enter student number: ");
+    studNumInput = stdin.readLineSync();
+    studNum = int.tryParse(studNumInput ?? '');
+
+    if (studNum == null || studNum <= 0) {
+      print("Invalid student number. Please try again.");
+      continue;
+    } else if (stuNums.contains(studNum)) {
+      print("Student number is already taken. Please use a different number.");
+      continue;
+    } else {
+      stuNums.add(studNum);
+      break;
+    }
+  }
+
+  String? name;
+
+  while (true) {
+    stdout.write('Enter full name: ');
+    name = stdin.readLineSync();
+
+    if (name == null || name.isEmpty || name.trim().isEmpty) {
+      print('Name cannot be empty. Please try again.');
+      continue;
+    }
+
+    RegExp nameRE = RegExp(r"^[a-zA-Z\s]+$");
+
+    if (!nameRE.hasMatch(name)) {
+      print('Invalid name. Please use letters and spaces only.');
+      continue;
+    } else {
+      break;
+    }
+  }
+
+  String? email;
+
+  while (true) {
+    stdout.write('Enter email address: ');
+    email = stdin.readLineSync() ?? '';
+
+    RegExp emailRE = RegExp(
+      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    );
+
+    if (!email.contains('@') || email.isEmpty || email.trim().isEmpty) {
+      print('Invalid email format. Please try again.');
+      continue;
+    } else if (emails.contains(email)) {
+      print('Email is already taken. Please use a different email.');
+      continue;
+    } else if (!emailRE.hasMatch(email)) {
+      print('Invalid email format. Please try again.');
+      continue;
+    } else {
+      emails.add(email);
+      break;
+    }
+  }
   String password = generatePassword();
   String username = generateUsername(name);
 
@@ -40,11 +103,11 @@ void registerStudent() {
   users.add(student);
 
   printBorder();
-  print("Welcome $name.");
-  print("Your email is: $email.");
-  print("Your Student No: $studNum.");
-  print("Your username: $username.");
-  print("Your password: $password.");
+  print("Welcome $name");
+  print("Your email is: $email");
+  print("Your Student No: $studNum");
+  print("Your username: $username");
+  print("Your password: $password");
   printBorder();
 }
 
@@ -52,12 +115,72 @@ void registerEmployee() {
   printBorder();
   print("\n=========== Register Employee ==========");
   printBorder();
-  print("Enter employee number:");
-  int empNum = int.parse(stdin.readLineSync()!);
-  print("Enter full name:");
-  String name = stdin.readLineSync()!;
-  print("Enter email:");
-  String email = stdin.readLineSync()!;
+
+  int? empNum;
+  String? empNumInput;
+
+  while (true) {
+    stdout.write("Enter employee number: ");
+    empNumInput = stdin.readLineSync();
+    empNum = int.tryParse(empNumInput ?? '');
+
+    if (empNum == null || empNum <= 0) {
+      print("Invalid employee number. Please try again.");
+      continue;
+    } else if (empNums.contains(empNum)) {
+      print("Employee number is already taken. Please use a different number.");
+      continue;
+    } else {
+      empNums.add(empNum);
+      break;
+    }
+  }
+
+  String? name;
+
+  while (true) {
+    stdout.write('Enter full name: ');
+    name = stdin.readLineSync();
+
+    if (name == null || name.isEmpty || name.trim().isEmpty) {
+      print('Name cannot be empty. Please try again.');
+      continue;
+    }
+
+    RegExp nameRE = RegExp(r"^[a-zA-Z\s]+$");
+
+    if (!nameRE.hasMatch(name)) {
+      print('Invalid name. Please use letters and spaces only.');
+      continue;
+    } else {
+      break;
+    }
+  }
+
+  String? email;
+
+  while (true) {
+    stdout.write('Enter email address: ');
+    email = stdin.readLineSync() ?? '';
+
+    RegExp emailRE = RegExp(
+      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    );
+
+    if (!email.contains('@') || email.isEmpty || email.trim().isEmpty) {
+      print('Invalid email format. Please try again.');
+      continue;
+    } else if (emails.contains(email)) {
+      print('Email is already taken. Please use a different email.');
+      continue;
+    } else if (!emailRE.hasMatch(email)) {
+      print('Invalid email format. Please try again.');
+      continue;
+    } else {
+      emails.add(email);
+      break;
+    }
+  }
   String password = generatePassword();
   String username = generateUsername(name);
 
@@ -65,10 +188,10 @@ void registerEmployee() {
   users.add(employee);
 
   printBorder();
-  print("Welcome $name.");
-  print("Your email is: $email.");
-  print("Your Employee No: $empNum.");
-  print("Your username: $username.");
-  print("Your password: $password.");
+  print("Welcome $name");
+  print("Your email is: $email");
+  print("Your Employee No: $empNum");
+  print("Your username: $username");
+  print("Your password: $password");
   printBorder();
 }

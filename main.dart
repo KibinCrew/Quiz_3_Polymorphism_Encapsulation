@@ -13,7 +13,7 @@ void main() {
     print(" | (4) View All Users            |");
     print(" | (0) Exit the Portal           |");
     printBorder();
-    print("Choose an option: ");
+    stdout.write("Choose an option: ");
     String choice = stdin.readLineSync()!;
 
     switch (choice) {

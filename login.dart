@@ -8,9 +8,29 @@ void login() {
   print("\n================= Login ================");
   printBorder();
 
-  print("Enter email:");
-  String email = stdin.readLineSync()!;
-  print("Enter password:");
+  String? email;
+
+  while (true) {
+    stdout.write('Enter email address: ');
+    email = stdin.readLineSync() ?? '';
+
+    RegExp emailRE = RegExp(
+      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    );
+
+    if (!email.contains('@') || email.isEmpty || email.trim().isEmpty) {
+      print('Invalid email format. Please try again.');
+      continue;
+    } else if (!emailRE.hasMatch(email)) {
+      print('Invalid email format. Please try again.');
+      continue;
+    } else {
+      emails.add(email);
+      break;
+    }
+  }
+
+  stdout.write("Enter password: ");
   String password = stdin.readLineSync()!;
 
   Person? loggedUser;
@@ -39,7 +59,8 @@ void login() {
   loggedUser.resetFailedAttempts();
   printBorder();
   print("Logged in successfully!");
-  print("Would you like to change your password? (yes/no)");
+  print("Welcome, ${loggedUser.name}!");
+  stdout.write("Would you like to change your password? (yes/no): ");
   String? changePasswordChoice = stdin.readLineSync();
 
   if (changePasswordChoice?.toLowerCase() == 'yes') {
@@ -52,7 +73,7 @@ void login() {
 }
 
 void changePassword(Person user) {
-  print("Enter old password:");
+  stdout.write("Enter old password:");
   String oldPassword = stdin.readLineSync()!;
   if (oldPassword != user.password) {
     print(" Old password is incorrect.");

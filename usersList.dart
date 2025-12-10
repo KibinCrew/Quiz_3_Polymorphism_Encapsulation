@@ -1,9 +1,9 @@
 import 'main.dart';
 import 'person.dart';
 
-void viewUsers(List<Person> users){
+void viewUsers(List<Person> users) {
   printBorder();
-  if (users.isEmpty){
+  if (users.isEmpty) {
     print("No user is registered yet.");
     printBorder();
     return;
