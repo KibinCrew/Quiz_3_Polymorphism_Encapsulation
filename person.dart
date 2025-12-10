@@ -3,13 +3,14 @@ class Person {
   String _name;
   String _email;
   String _password;
+  String _username;
   int _failedAttempts;
-  bool _islocked;
+  bool _isLocked; 
 
   // initialize user
-  Person(this._name, this._email, this._password)
+  Person(this._name, this._email, this._password, this._username)
   : _failedAttempts = 0,
-  _islocked = false;
+  _isLocked = false; 
 
   // getters and setters
   String get name => _name;
@@ -21,11 +22,14 @@ class Person {
   String get password => _password;
   set password(String value) => _password = value;
 
+  String get username => _username;
+  set username(String value) => _username = value;
+
   int get failed => _failedAttempts;
   set failed(int value) => _failedAttempts = value;
 
-  bool get isLocked => _islocked;
-  set isLocked(bool value) => _islocked = value;
+  bool get isLocked => _isLocked; 
+  set isLocked(bool value) => _isLocked = value; 
 
   // display basic user info
   void display(){
@@ -36,14 +40,25 @@ class Person {
   void countFailedAttempts(){
     _failedAttempts++;
     if (_failedAttempts >= 3) {
-      _islocked = true;
-      print("You have reached the maximum failed attempts. Please contact admin to fix");
+      _isLocked = true; 
+      print("Account locked. Please contact admin."); 
     }
   }
 
   // reset failed attempts
   void resetFailedAttempts(){
     _failedAttempts = 0;
-    _islocked =false;
+    _isLocked = false;  
   }
+}
+
+// Formal introduction for the "Welcome ________"
+String toProperCase(String name) {
+  return name
+      .trim()
+      .split(' ')
+      .map((word) => word.isNotEmpty
+          ? word[0].toUpperCase() + word.substring(1).toLowerCase()
+          : '')
+      .join(' ');
 }

@@ -6,11 +6,19 @@ class Employee extends Person {
   int _empNum;
 
   //​‍​‌‍​‍‌​‍​‌‍​‍‌ constructor
-  Employee(String name, String email, String password, this._empNum)
-    : super(name, email, password);
+  Employee(String name, String email, String password, String username, this._empNum)
+    : super(name, email, password, username);
 
 // get employee number
   int get empNum => _empNum;
+
+// setters
+set empNum(int value) => _empNum = value;
+
+// Method
+  int getNum() {
+    return _empNum;
+  }
 
 // display employee details
   @override

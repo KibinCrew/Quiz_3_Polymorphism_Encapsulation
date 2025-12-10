@@ -21,6 +21,7 @@ String generatePassword() {
 
 // generate username
 String generateUsername(String name) {
+  name = name.replaceAll(" ", "");
   String nameFive = name.length >= 5
       ? name.substring(0, 5).toLowerCase()
       : name.toLowerCase();
@@ -78,25 +79,24 @@ void registerStudent() {
     }
   }
 
-  // ask email
+  name = toProperCase(name);
+
+  // ask email - student email only
   String? email;
 
   while (true) {
-    stdout.write('Enter email address: ');
+    stdout.write('Enter HAU student email address: ');
     email = stdin.readLineSync() ?? '';
 
     RegExp emailRE = RegExp(
-      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+      r"^[a-zA-Z0-9._%+-]+@student\.hau\.edu\.ph$",
     );
 
-    if (!email.contains('@') || email.isEmpty || email.trim().isEmpty) {
-      print('Invalid email format. Please try again.');
+    if (!emailRE.hasMatch(email)) {
+      print('Invalid student email. Use format: yourname@student.hau.edu.ph');
       continue;
     } else if (emails.contains(email)) {
       print('Email is already taken. Please use a different email.');
-      continue;
-    } else if (!emailRE.hasMatch(email)) {
-      print('Invalid email format. Please try again.');
       continue;
     } else {
       emails.add(email);
@@ -109,7 +109,7 @@ void registerStudent() {
   String username = generateUsername(name);
 
   // create student
-  var student = Student(name, email, password, studNum);
+  var student = Student(name, email, password, username, studNum);
   users.add(student);
 
   // display registration info
@@ -171,25 +171,24 @@ void registerEmployee() {
     }
   }
 
-  // ask email
+  name = toProperCase(name);
+
+  // ask email - employee email only
   String? email;
 
   while (true) {
-    stdout.write('Enter email address: ');
+    stdout.write('Enter HAU employee email address: ');
     email = stdin.readLineSync() ?? '';
 
     RegExp emailRE = RegExp(
-      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+      r"^[a-zA-Z0-9._%+-]+@employee\.hau\.edu\.ph$",
     );
 
-    if (!email.contains('@') || email.isEmpty || email.trim().isEmpty) {
-      print('Invalid email format. Please try again.');
+    if (!emailRE.hasMatch(email)) {
+      print('Invalid employee email. Use format: yourname@employee.hau.edu.ph');
       continue;
     } else if (emails.contains(email)) {
       print('Email is already taken. Please use a different email.');
-      continue;
-    } else if (!emailRE.hasMatch(email)) {
-      print('Invalid email format. Please try again.');
       continue;
     } else {
       emails.add(email);
@@ -202,7 +201,7 @@ void registerEmployee() {
   String username = generateUsername(name);
 
   // create employee
-  var employee = Employee(name, email, password, empNum);
+  var employee = Employee(name, email, password, username, empNum);
   users.add(employee);
 
   // display registration info

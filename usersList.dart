@@ -12,9 +12,10 @@ void viewUsers(List<Person> users) {
     return;
   }
 
-  // show each user
+  // polymorphism that treats Student and Employee objects as Person
+  // calling overridden display() method
   for (var user in users) {
-    user.display();
+    user.display(); // calls Student or Employee display()
   }
   printBorder();
 }

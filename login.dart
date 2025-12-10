@@ -3,112 +3,147 @@ import 'main.dart';
 import 'person.dart';
 import 'registration.dart';
 
-// login function
 void login() {
   printBorder();
   print("\n================= Login ================");
   printBorder();
 
-  // ask email
-  String? email;
-
+  // Get username ONCE
+  String username = "";
   while (true) {
-    stdout.write('Enter email address: ');
-    email = stdin.readLineSync() ?? '';
+    stdout.write('Enter username: ');
+    String? u = stdin.readLineSync();
 
-    RegExp emailRE = RegExp(
-      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-    );
-
-    if (!email.contains('@') || email.isEmpty || email.trim().isEmpty) {
-      print('Invalid email format. Please try again.');
+    if (u == null || u.trim().isEmpty) {
+      print("Username cannot be empty.");
       continue;
-    } else if (!emailRE.hasMatch(email)) {
-      print('Invalid email format. Please try again.');
-      continue;
-    } else {
-      emails.add(email);
-      break;
     }
+
+    username = u.trim();
+    break;
   }
 
-  // ask password
-  stdout.write("Enter password: ");
-  String password = stdin.readLineSync()!;
-
-  // check user
-  Person? loggedUser;
+  // Find user by username
+  Person? foundUser;
   for (var user in users) {
-    if (user.email == email && user.password == password) {
-      loggedUser = user;
+    if (user.username == username) {
+      foundUser = user;
       break;
     }
   }
 
-  // invalid login
-  if (loggedUser == null) {
+  // User not found
+  if (foundUser == null) {
     printBorder();
-    print("Invalid email or password.");
-    printBorder();
-    return;
-  }
-
-  // check if account is locked
-  if (loggedUser.isLocked) {
-    printBorder();
-    print(
-      "Account have reached maximum failed attempts. Please contact admin.",
-    );
+    print("Invalid username or password.");
     printBorder();
     return;
   }
 
-  // reset failed attempts
-  loggedUser.resetFailedAttempts();
-  printBorder();
-  print("Logged in successfully!");
-  print("Welcome, ${loggedUser.name}!");
-
-  // change password option
-  stdout.write("Would you like to change your password? (yes/no): ");
-  String? changePasswordChoice = stdin.readLineSync();
-
-  if (changePasswordChoice?.toLowerCase() == 'yes') {
-    changePassword(loggedUser);
-  } else {
-    print("You chose not to change your password.");
+  // Check if already locked
+  if (foundUser.isLocked) {
+    printBorder();
+    print("Account locked. Please contact admin.");
+    printBorder();
+    return;
   }
 
-  printBorder();
+  // PASSWORD LOOP - Allow up to 3 attempts
+  while (!foundUser.isLocked) {
+    stdout.write("Enter password: ");
+    String? passwordInput = stdin.readLineSync();
+    String password = passwordInput ?? '';
+
+    // Check password
+    if (foundUser.password != password) {
+      foundUser.countFailedAttempts();
+      printBorder();
+      if (foundUser.isLocked) {
+        print("Account locked. Please contact admin.");
+      } else {
+        int remaining = 3 - foundUser.failed;
+        print("Invalid password. $remaining attempt(s) remaining.");
+      }
+      printBorder();
+      
+      // If locked, exit the loop
+      if (foundUser.isLocked) {
+        return;
+      }
+      // Otherwise, continue to next iteration (ask password again)
+      continue;
+    }
+
+    // SUCCESS - Password is correct
+    foundUser.resetFailedAttempts();
+    printBorder();
+    print("Logged in successfully!");
+    print("Welcome, ${foundUser.name}!");
+
+    // OPTIONAL: Change Password
+    stdout.write("Would you like to change your password? (yes/no): ");
+    String? changePasswordChoice = stdin.readLineSync();
+
+    if (changePasswordChoice?.toLowerCase() == 'yes') {
+      changePassword(foundUser);
+    } else {
+      print("You chose not to change your password.");
+    }
+
+    printBorder();
+    return; // Exit after successful login
+  }
 }
 
-// change password 
+// change password
 void changePassword(Person user) {
-  stdout.write("Enter old password:");
-  String oldPassword = stdin.readLineSync()!;
-  if (oldPassword != user.password) {
-    print(" Old password is incorrect.");
-    return;
+
+  // Loop until correct old password is entered
+  while (true) {
+    stdout.write("Enter old password: ");
+    String? oldPasswordInput = stdin.readLineSync();
+    String oldPassword = oldPasswordInput ?? '';
+
+    if (oldPassword != user.password) {
+      print("Old password is incorrect. Try again.");
+      continue;
+    }
+
+    break; // correct old password
   }
 
-  // ask new password
-  print("Enter new password of at least 8 characters:");
-  String newPassword = stdin.readLineSync()!;
+  // ask new password until valid
+  String newPassword;
+  while (true) {
+    stdout.write("Enter new password (min 8 chars): ");
+    String? newPasswordInput = stdin.readLineSync();
+    newPassword = newPasswordInput ?? '';
 
-  if (newPassword.length < 8 || newPassword == oldPassword) {
-    print(
-      "New password must be at least 8 characters and different from past password.",
-    );
-    return;
+    if (newPassword.length < 8) {
+      print("Password too short. Try again.");
+      continue;
+    }
+
+    if (newPassword == user.password) {
+      print("New password must be different from old password.");
+      continue;
+    }
+
+    break; // valid
   }
 
-  // confirm new password
-  print("Confirm new password:");
-  String confirmNewPassword = stdin.readLineSync()!;
+  // confirm password until match
+  while (true) {  
+    stdout.write("Confirm new password: ");
+    String? confirmInput = stdin.readLineSync();
+    String confirmNewPassword = confirmInput ?? '';
 
-  if (newPassword != confirmNewPassword) {
-    print("Passwords does not match.");
-    return;
+    if (confirmNewPassword != newPassword) {
+      print("Passwords do not match. Try again.");
+      continue;
+    }
+
+    break;
   }
 
   // update password

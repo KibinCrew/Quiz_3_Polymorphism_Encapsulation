@@ -8,7 +8,7 @@ void main() {
     printBorder();
     print("\n========= Users Account System =========");
     print(" | (1) Register Student          |");
-    print(" | (2) Register Employeee        |");
+    print(" | (2) Register Employee         |");
     print(" | (3) Login as a user           |");
     print(" | (4) View All Users            |");
     print(" | (0) Exit the Portal           |");
